@@ -1,4 +1,5 @@
 import { type Locator, type Page } from "@playwright/test";
+import { LoginPage } from "./login_page.ts";
 
 export class DashboardPage {
   //identifikace prvku a dalsich properties
@@ -12,11 +13,14 @@ export class DashboardPage {
     this.logoutButton = page.locator("#logout");
   }
   //ovladaci metody
-  async clickProfile() {
+  async clickProfile(): Promise<DashboardPage> {
+    await this.page.waitForTimeout(3000);
     await this.profileButton.click();
+    return this;
   }
 
-  async clickLogout() {
+  async clickLogout(): Promise<LoginPage> {
     await this.logoutButton.click();
+    return new LoginPage(this.page);
   }
 }
