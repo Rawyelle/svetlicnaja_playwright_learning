@@ -2,12 +2,6 @@ import { type Locator, type Page } from "@playwright/test";
 import { expect } from "@playwright/test";
 
 export class DefaultScreenPage {
-  static expectLogoVisible() {
-    throw new Error("Method not implemented.");
-  }
-  open() {
-    throw new Error("Method not implemented.");
-  }
   //identifikace prvku a dalsich properties
   private readonly page: Page;
   private readonly url = "https://tredgate.com/eshop/";
@@ -17,7 +11,7 @@ export class DefaultScreenPage {
   private readonly InfoInFooter: Locator;
   private readonly myAccountMenu: Locator;
   private readonly registerButton: Locator;
-  private readonly searchInput: Locator;
+  readonly searchInput: Locator;
   private readonly searchButton: Locator;
   private readonly iphoneLink: Locator;
   private readonly addToCartButton: Locator;
@@ -54,10 +48,6 @@ export class DefaultScreenPage {
     await this.registerButton.click();
   }
 
-  async fillSearch(productName: string) {
-    await this.searchInput.fill(productName);
-  }
-
   async clickSearchButton() {
     await this.searchButton.click();
   }
@@ -83,6 +73,11 @@ export class DefaultScreenPage {
 
   async expectSearchPlaceholder(expected: string) {
     await expect(this.searchInput).toHaveAttribute("placeholder", expected); //to taky
+    return this;
+  }
+
+  async fillSearch(text: string): Promise<DefaultScreenPage> {
+    await this.searchInput.fill(text);
     return this;
   }
 
