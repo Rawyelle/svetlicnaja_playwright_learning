@@ -3,10 +3,7 @@ import { DashboardPage } from "./dashboard_page.ts";
 import { LostPasswordPage } from "./lost_password_page.ts";
 
 export class LoginPage {
-  profileButtonIsVisible(): any {
-    throw new Error("Method not implemented.");
-  }
-  //identifikace prvku a dalsich properties
+  // 1. Identifikace prvků a dalších properties
   private readonly page: Page;
   private readonly url = "https://tredgate.com/pmtool/";
   private readonly usernameInput: Locator;
@@ -15,7 +12,7 @@ export class LoginPage {
   private readonly passwordForgottenAnchor: Locator;
   private readonly pageHeader: Locator;
 
-  //constructor v kterem nastavime jednotlive lokatory
+  // 2. Constructor v kterém nastavíme jednotlivé lokátory
   constructor(page: Page) {
     this.page = page;
     this.usernameInput = page.locator("#username");
@@ -24,7 +21,13 @@ export class LoginPage {
     this.passwordForgottenAnchor = page.locator("#forget_password");
     this.pageHeader = page.locator("h3.form-title");
   }
-  //ovladaci metody
+
+  // 3. Ovládací metody
+  // Při vytváření metod doporučím přístup začít s atomickými (malými) metodami s jedním krokem a pak vytvářet sdružující metody
+  // Například: typeUsername - jeden krok, login - sdružení více kroků
+  // Atomické metody používáme, když danou funkcionalitu testujeme a sdružující metody například pro preconditions jiných testů
+
+  // ! Testovací data NIKDY nedáváme do metod, ale dáváme je do parametru
   async typeUsername(username: string): Promise<LoginPage> {
     await this.usernameInput.fill(username);
     return this;
@@ -57,6 +60,7 @@ export class LoginPage {
     return new LostPasswordPage(this.page);
   }
 
+  // ? Alternativní názvy metody: assertPageHeaderText, pageHeaderShouldHaveText
   async pageHeaderHasText(headerText: string): Promise<LoginPage> {
     await expect(this.pageHeader).toHaveText(headerText);
     return this;
