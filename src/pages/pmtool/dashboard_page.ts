@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 import { LoginPage } from "./login_page.ts";
 import { ProjectsPage } from "./projects_page.ts";
 
@@ -9,6 +9,7 @@ export class DashboardPage {
   private readonly logoutButton: Locator;
   private readonly projectsButton: Locator;
   private readonly pageNavBar: Locator;
+  private readonly notificationButton: Locator;
   //constructor v kterem nastavime jednotlive lokatory
   constructor(page: Page) {
     this.page = page;
@@ -16,10 +17,12 @@ export class DashboardPage {
     this.logoutButton = page.locator("#logout");
     this.projectsButton = page.locator("#Projects a");
     this.pageNavBar = page.locator(".navbar-brand");
+    this.notificationButton = page.locator("#user_notifications_report");
   }
   //ovladaci metody
   async clickProfile(): Promise<DashboardPage> {
-    await this.page.waitForTimeout(3000);
+    //await this.page.waitForTimeout(3000);
+    await expect(this.notificationButton).toBeInViewport();
     await this.profileButton.click();
     return this;
   }
@@ -42,5 +45,13 @@ export class DashboardPage {
   async appHeaderHasText(appName: string): Promise<DashboardPage> {
     await expect(this.pageNavBar).toHaveText(appName);
     return this;
+  }
+
+  async logout(): Promise<LoginPage> {
+    await test.step("Odhlášení z Pmtool", async () => {
+      await this.clickProfile().then((dashboard) => dashboard.clickLogout());
+    });
+
+    return new LoginPage(this.page);
   }
 }
