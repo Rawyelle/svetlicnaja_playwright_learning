@@ -1,5 +1,7 @@
-name: Playwright Tests
+name: Time-based Playwright Tests
 on:
+  schedule:
+    - cron: "*/15 * * * *" # Běží každých 15 minut
   push:
     branches: [main, master]
   pull_request:
