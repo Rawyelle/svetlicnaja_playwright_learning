@@ -113,7 +113,10 @@ export class CreateNewProjectModal {
   }
 
   async typeStartDate(startDateValue: string): Promise<CreateNewProjectModal> {
-    await this.startDateInput.fill(startDateValue);
+    // ? Pro vyplnění tohoto pole potřebujeme použít speciální sekvenci kroků, jinak by se nám datum správně nepropsalo (zobrazuje se okno kalendáře, které vždy má prioritu, pomocí Escape ho zavřeme)
+    await this.startDateInput.click();
+    await this.startDateInput.press("Escape");
+    await this.startDateInput.pressSequentially(startDateValue);
     return this;
   }
 }
