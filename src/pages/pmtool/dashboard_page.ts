@@ -14,7 +14,7 @@ export class DashboardPage {
   constructor(page: Page) {
     this.page = page;
     this.profileButton = page.locator("#user_dropdown");
-    this.logoutButton = page.locator("#logout");
+    this.logoutButton = page.locator("//li[@id='logout']");
     this.projectsButton = page.locator("#Projects a");
     this.pageNavBar = page.locator(".navbar-brand");
     this.notificationButton = page.locator("#user_notifications_report");
